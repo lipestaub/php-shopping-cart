@@ -4,13 +4,14 @@
             $productInCart = $this->getProductInCart($product->getId());
 
             if ($productInCart != []) {
-                $productInCart->setQuantity += $product->getQuantity();
+                $quantity = $productInCart->getQuantity() + $product->getQuantity();
+                $_SESSION['cart']['products'][$product->getId()]->setQuantity($quantity);
             }
             else {
                 $this->setProductInCart($product);
             }
 
-            $this->setTotal($product);
+            $this->updateTotal();
         }
 
         public function remove(int $productId) {
@@ -36,16 +37,6 @@
 
         public function getTotal() {
             return $_SESSION['cart']['total'] ?? 0;
-        }
-
-        private function setTotal(Product $product) {
-            if (!isset($_SESSION['cart']['total'])) {
-                $_SESSION['cart']['total'] = 0;
-            }
-
-            foreach ($this->getProductsInCart() as $product) {
-                $_SESSION['cart']['total'] += $product->getPrice() * $product->getQuantity();
-            }
         }
 
         private function updateTotal() {
