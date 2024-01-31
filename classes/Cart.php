@@ -1,49 +1,37 @@
 <?php
     class Cart {
         public function add(Product $product) {
-            $productInCart = false;
+            $productInCart = $this->getProductInCart($product->getId());
+
+            if ($productInCart != []) {
+                $productInCart->setQuantity += $product->getQuantity();
+            }
+            else {
+                $this->setProductInCart($product);
+            }
+
             $this->setTotal($product);
-
-            if(isset($_SESSION['cart']['products'])) {
-                if(count($this->getCart()) > 0) {
-                    foreach($this->getCart() as $productInCart) {
-                        if($productInCart->getId() === $product->getId()) {
-                            $quantity = $productInCart->getQuantity() + $product->getQuantity();
-                            $productInCart->setQuantity($quantity);
-    
-                            $productInCart = true;
-                            break;
-                        }
-                    }
-                }
-            }
-
-            if(!$productInCart) {
-                $this->setProductsInCart($product);
-            }
         }
 
-        public function remove(int $id) {
-            if (isset($_SESSION['cart']['products'])) {
-                foreach($this->getCart() as $key=>$product) {
-                    if($product->getId() === $id) {
-                        unset($_SESSION['cart']['products'][$key]);
-                        $_SESSION['cart']['products'] -= $product->getPrice() * $product->getQuantity();
-                    }
-                }
-            }
+        public function remove(int $productId) {
+            unset($_SESSION['cart']['products'][$productId]);
+            $this->updateTotal();
         }
 
-        public function getCart() {
+        public function getProductInCart(int $productId) {
+            return $_SESSION['cart']['products'][$productId] ?? [];
+        }
+
+        public function getProductsInCart() {
             return $_SESSION['cart']['products'] ?? [];
         }
 
-        private function setProductsInCart(Product $product) {
+        private function setProductInCart(Product $product) {
             if(!isset($_SESSION['cart']['products'])) {
                 $_SESSION['cart']['products'] = [];
             }
-            var_dump('aqui');
-            array_push($_SESSION['cart']['products'], $product);
+
+            $_SESSION['cart']['products'][$product->getId()] = $product;
         }
 
         public function getTotal() {
@@ -55,7 +43,17 @@
                 $_SESSION['cart']['total'] = 0;
             }
 
-            $_SESSION['cart']['total'] += $product->getPrice() * $product->getQuantity();
+            foreach ($this->getProductsInCart() as $product) {
+                $_SESSION['cart']['total'] += $product->getPrice() * $product->getQuantity();
+            }
+        }
+
+        private function updateTotal() {
+            $_SESSION['cart']['total'] = 0;
+            
+            foreach ($this->getProductsInCart() as $product) {
+                $_SESSION['cart']['total'] += $product->getPrice() * $product->getQuantity();
+            }
         }
     }
 ?>

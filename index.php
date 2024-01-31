@@ -3,7 +3,7 @@
     require_once __DIR__ . '/classes/Product.php';
 
     session_start();
-
+    
     $products = [
         0 => ['id' => 1, 'description' => 'Geladeira', 'price' => 1499.99, 'quantity' => 1],
         1 => ['id' => 2, 'description' => 'Mouse', 'price' => 39.99, 'quantity' => 1],
@@ -37,8 +37,8 @@
 <body>
     <nav>
         <ul>
-            <li><a href="/php-carrinho/index.php">Início</a></li>
-            <li><a href="/php-carrinho/cart.php">Carrinho</a></li>
+            <li><a href="/index.php">Início</a></li>
+            <li><a href="/cart.php">Carrinho</a></li>
         </ul>
     </nav>
     <table>

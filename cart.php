@@ -12,7 +12,7 @@
     }
 
     $cart = new Cart();
-    $products = $cart->getCart();
+    $products = $cart->getProductsInCart();
 ?>
 
 <!DOCTYPE html>
@@ -25,8 +25,8 @@
 <body>
     <nav>
         <ul>
-            <li><a href="/php-carrinho/index.php">Início</a></li>
-            <li><a href="/php-carrinho/cart.php">Carrinho</a></li>
+            <li><a href="/index.php">Início</a></li>
+            <li><a href="/cart.php">Carrinho</a></li>
         </ul>
     </nav>
     <table>
