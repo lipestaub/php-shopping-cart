@@ -18,5 +18,4 @@ This application provides basic shopping cart functionality, allowing users to a
 
 1.  Clone the repository to your web server's document root.
 2.  Ensure you have a PHP environment set up.
-3.  Configure any database connections in the code.
-4.  Open the application in your web browser.
+3.  Open the application in your web browser.
